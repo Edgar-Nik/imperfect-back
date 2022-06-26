@@ -18,7 +18,6 @@ const PerformerSchema = Schema({
   },
   gender: {
     type: String,
-    required: true,
   },
   higer_education: {
     type: Boolean,

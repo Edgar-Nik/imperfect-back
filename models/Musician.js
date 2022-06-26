@@ -18,7 +18,6 @@ const MusicianSchema = Schema({
   },
   gender: {
     type: String,
-    required: true,
   },
   voice_type: {
     am: {

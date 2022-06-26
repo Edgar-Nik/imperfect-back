@@ -12,6 +12,7 @@ const fineArtRoute = require("./routes/fineArtRoute");
 const musicianRoute = require("./routes/musicianRoute");
 const performerRoute = require("./routes/performerRoute");
 const productionManager = require("./routes/productionManagerRoute");
+const s3 = require("./routes/s3Route");
 const corsOptions = {
   origin: "*",
   methods: ["POST", "GET", "PATCH", "DELETE", "OPTIONS", "PUT"],
@@ -38,6 +39,7 @@ app.use("/api/fine-arts", fineArtRoute);
 app.use("/api/musicians", musicianRoute);
 app.use("/api/performers", performerRoute);
 app.use("/api/production-managers", productionManager);
+app.use("/api/s3", s3);
 
 const start = async () => {
   console.log(`listening to port ${PORT}`);
