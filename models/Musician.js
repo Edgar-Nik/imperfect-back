@@ -44,7 +44,6 @@ const MusicianSchema = Schema({
   },
   experience_date: {
     type: Date,
-    required: true,
   },
   languages: {
     type: Array,

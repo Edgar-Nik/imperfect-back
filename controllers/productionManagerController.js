@@ -74,10 +74,48 @@ const getAllProductionManagers = async (req, res) => {
   }
 };
 
+const uploadImages = async (req, res) => {
+  try {
+    const images = req.images;
+
+    const updatedProductionManager = await ProductionManager.findByIdAndUpdate(
+      req.params.id,
+      {
+        $push: { images: { $each: images } },
+        $set: { image: images && images[0] ? images[0] : null },
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedProductionManager);
+  } catch (err) {
+    const status = err.name === "ValidationError" ? 422 : 500;
+    res.status(status).json(err);
+  }
+};
+const uploadGif = async (req, res) => {
+  try {
+    const images = req.images;
+    console.log(images);
+    const updatedProductionManager = await ProductionManager.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: { gif: images[0] },
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedProductionManager);
+  } catch (err) {
+    const status = err.name === "ValidationError" ? 422 : 500;
+    res.status(status).json(err);
+  }
+};
+
 module.exports = {
   createProductionManager,
   updateProductionManager,
   deleteProductionManager,
   getProductionManagerById,
   getAllProductionManagers,
+  uploadImages,
+  uploadGif,
 };

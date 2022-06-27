@@ -41,7 +41,6 @@ const deleteFilmMaker = async (req, res) => {
 
 //GET_BY_ID
 const getFilmMakerById = async (req, res) => {
-  console.log(req.params.locale);
   try {
     const filmMaker = await FilmMaker.findById(req.params.id);
     res.status(200).json(filmMaker);
@@ -74,10 +73,47 @@ const getAllFilmMakers = async (req, res) => {
   }
 };
 
+const uploadImages = async (req, res) => {
+  try {
+    const images = req.images;
+
+    const updatedFilmMaker = await FilmMaker.findByIdAndUpdate(
+      req.params.id,
+      {
+        $push: { images: { $each: images } },
+        $set: { image: images && images[0] ? images[0] : null },
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedFilmMaker);
+  } catch (err) {
+    const status = err.name === "ValidationError" ? 422 : 500;
+    res.status(status).json(err);
+  }
+};
+const uploadGif = async (req, res) => {
+  try {
+    const images = req.images;
+
+    const updatedFilmMaker = await FilmMaker.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: { gif: images[0] },
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedFilmMaker);
+  } catch (err) {
+    const status = err.name === "ValidationError" ? 422 : 500;
+    res.status(status).json(err);
+  }
+};
 module.exports = {
   createFilmMaker,
   updateFilmMaker,
   deleteFilmMaker,
   getFilmMakerById,
   getAllFilmMakers,
+  uploadImages,
+  uploadGif,
 };

@@ -73,10 +73,49 @@ const getAllDesigners = async (req, res) => {
   }
 };
 
+const uploadImages = async (req, res) => {
+  try {
+    const images = req.images;
+
+    const updatedDesigner = await Designer.findByIdAndUpdate(
+      req.params.id,
+      {
+        $push: { images: { $each: images } },
+        $set: { image: images && images[0] ? images[0] : null },
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedDesigner);
+  } catch (err) {
+    const status = err.name === "ValidationError" ? 422 : 500;
+    res.status(status).json(err);
+  }
+};
+
+const uploadGif = async (req, res) => {
+  try {
+    const images = req.images;
+
+    const updatedDesigner = await Designer.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: { gif: images[0] },
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedDesigner);
+  } catch (err) {
+    const status = err.name === "ValidationError" ? 422 : 500;
+    res.status(status).json(err);
+  }
+};
+
 module.exports = {
   createDesigner,
   updateDesigner,
   deleteDesigner,
   getDesignerById,
   getAllDesigners,
+  uploadImages,
+  uploadGif,
 };
